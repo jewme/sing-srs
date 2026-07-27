@@ -1,0 +1,37 @@
+# sing-box rule source configuration template
+#
+# Copy this file to sources.yaml (same directory) and replace the example
+# URLs with your own sources. The workflow reads from sources.yaml by default.
+#
+# Each entry:
+#   name    required, becomes the output file name (name.json / name.srs)
+#   urls    required, 1 url is a single file; multiple are merged into one output
+#   types   optional, keep only these categories: domain / cidr / port; omit to keep all
+#   enabled optional, default true; set false to disable a source without deleting its config
+
+sources:
+  - name: ads
+    urls:
+      - https://example.com/ads-domain.list
+      - https://example.com/ads-cidr.list
+    types: [domain, cidr]
+
+  - name: ai
+    urls:
+      - https://example.com/ai.list
+    types: [domain]
+
+  - name: cn-ip
+    urls:
+      - https://example.com/china-ip.srs
+
+  - name: gfw
+    urls:
+      - https://example.com/gfw-part1.list
+      - https://example.com/gfw-part2.list
+
+  # Example: temporarily disabled but kept for later
+  # - name: experimental
+  #   urls:
+  #     - https://example.com/experimental.list
+  #   enabled: false
