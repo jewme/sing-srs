@@ -50,7 +50,7 @@ jobs:
 
     steps:
       - name: Checkout main
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         # A shallow checkout of the current branch (main) is enough here;
         # the rule-set branch is fetched separately below.
 
