@@ -10,7 +10,7 @@ sources:
 
   - name: Emby
     urls:
-      - https://raw.githubusercontent.com/jewme/sing-srs/refs/heads/main/rule/custom/emby.json
+      - https://raw.githubusercontent.com/jewme/sing-srs/refs/heads/main/custom-rules/emby.json
 
   - name: Crypto
     urls:
