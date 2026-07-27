@@ -1,0 +1,139 @@
+name: Build sing-box rule-sets
+
+on:
+  schedule:
+    - cron: "0 18 * * *" #timezone: UTC
+  workflow_dispatch:
+    inputs:
+      push_changes:
+        description: "Commit and push after generating (turn off for manual debug runs)"
+        type: boolean
+        default: true
+  push:
+    branches: [main]
+    paths:
+      - "sources.yaml"
+      - "main.py"
+      - "requirements.txt"
+      - ".github/workflows/build-rules.yml"
+
+# Prevent overlapping runs from racing on the push step
+concurrency:
+  group: build-rules
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+env:
+  # Pin the sing-box version. Before bumping it, check the release changelog
+  # and update this by hand -- never use "latest", since a rule-set format
+  # change upstream could silently break compilation on some future run.
+  SING_BOX_VERSION: "1.13.14"
+  SOURCES_FILE: sources.yaml
+  # Code lives on main; generated rule-sets are only ever pushed to this
+  # separate branch, keeping them out of the code history.
+  RULE_SET_BRANCH: rule-set
+  # If the success rate falls below this threshold, the script exits non-zero
+  # and this run is marked failed instead of publishing an incomplete
+  # rule-set. Set to "0" to disable the check.
+  MIN_SUCCESS_RATE: "0.8"
+  # Whether to clean up old files whose source was removed from the config
+  # (default true, spelled out here so the toggle is visible; set to "false"
+  # to turn it off).
+  CLEANUP_STALE: "true"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        # A shallow checkout of the current branch (main) is enough here;
+        # the rule-set branch is fetched separately below.
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: requirements.txt
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Cache sing-box binary
+        id: cache-singbox
+        uses: actions/cache@v4
+        with:
+          path: /usr/local/bin/sing-box
+          key: sing-box-${{ env.SING_BOX_VERSION }}-linux-amd64
+
+      - name: Install sing-box (pinned version)
+        if: steps.cache-singbox.outputs.cache-hit != 'true'
+        run: |
+          set -euo pipefail
+          version="${SING_BOX_VERSION}"
+          filename="sing-box-${version}-linux-amd64"
+          curl -fsSL -o "${filename}.tar.gz" \
+            "https://github.com/SagerNet/sing-box/releases/download/v${version}/${filename}.tar.gz"
+          tar -xzf "${filename}.tar.gz"
+          sudo install -m 0755 "${filename}/sing-box" /usr/local/bin/sing-box
+          rm -rf "${filename}" "${filename}.tar.gz"
+
+      - name: Verify sing-box
+        run: sing-box version
+
+      - name: Prepare rule-set worktree
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Only shallow-fetch the latest commit of the rule-set branch, so
+          # CI stays equally fast no matter how many years of history that
+          # branch accumulates. If the branch does not exist yet, this fetch
+          # fails, which is expected on the very first run.
+          git fetch --depth=1 origin "${RULE_SET_BRANCH}" 2>/dev/null || true
+
+          # The worktree is created one level above the repo directory
+          # rather than nested inside main's own working tree, so it is
+          # never mistaken for untracked files by main's git status.
+          if git show-ref --verify --quiet "refs/remotes/origin/${RULE_SET_BRANCH}"; then
+            echo "Branch '${RULE_SET_BRANCH}' already exists, creating a worktree from the remote branch"
+            git worktree add -b "${RULE_SET_BRANCH}" "../${RULE_SET_BRANCH}" "origin/${RULE_SET_BRANCH}"
+          else
+            echo "Branch '${RULE_SET_BRANCH}' does not exist yet, creating an orphan worktree (expected on the first run)"
+            git worktree add --orphan -b "${RULE_SET_BRANCH}" "../${RULE_SET_BRANCH}"
+          fi
+
+          # Every later step can use this absolute path as the output directory
+          echo "OUTPUT_DIR=$(cd "../${RULE_SET_BRANCH}" && pwd)" >> "$GITHUB_ENV"
+
+      - name: Generate rule-sets
+        run: python main.py
+
+      - name: Sanity-check output
+        run: |
+          set -euo pipefail
+          if [ -z "$(find "${OUTPUT_DIR}" -name '*.json' -print -quit 2>/dev/null)" ]; then
+            echo "::error::No JSON files were produced in the output directory, treating this run as failed"
+            exit 1
+          fi
+          echo "Output files:"
+          find "${OUTPUT_DIR}" -type f | sort
+
+      - name: Commit & push rule-set branch
+        if: github.event_name != 'workflow_dispatch' || github.event.inputs.push_changes == 'true'
+        run: |
+          set -euo pipefail
+          cd "${OUTPUT_DIR}"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to the rule-sets, skipping commit"
+          else
+            git commit -m "chore: update rule-sets ($(date -u +'%Y-%m-%d %H:%M UTC'))"
+            git push origin "${RULE_SET_BRANCH}"
+          fi
