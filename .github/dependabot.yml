@@ -1,0 +1,8 @@
+version: 2
+updates:
+  # listen and auto-update GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
