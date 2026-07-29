@@ -1,0 +1,48 @@
+# sing-box rule source configuration template
+#
+# Copy this file to sources.yaml (same directory) and replace the example
+# URLs with your own sources. The workflow reads from sources.yaml by default.
+#
+# Each entry:
+#   name    required, becomes the output file name (name.json / name.srs)
+#   urls    required, one url is a single file; multiple are merged into one output
+#   types   optional, keep only these categories: domain / cidr / port; omit to keep all
+#   enabled optional, default true; set false to disable a source without deleting its config
+#   format  optional, "auto" (default) or "adguard" for AdGuard filter lists --
+#           an adguard source is merged and deduplicated, then saved as both
+#           DNSF/name.txt and DNSF/name.srs (never a top-level name.json),
+#           ignores "types", and is never split into CIDR/DOMN subsets, since
+#           sing-box has no way to decompile an AdGuard-converted rule-set
+#           back to JSON
+
+sources:
+  - name: ads
+    urls:
+      - https://example.com/ads-domain.list
+      - https://example.com/ads-cidr.list
+    types: [domain, cidr]
+
+  - name: proxy
+    urls:
+      - https://example.com/proxy.json
+    types: [domain]
+
+  - name: direct
+    urls:
+      - https://example.com/direct.srs
+
+  - name: combined
+    urls:
+      - https://example.com/part1.list
+      - https://example.com/part2.list
+
+  - name: adguard
+    urls:
+      - https://example.com/adguard-filter.txt
+    format: adguard
+
+  # Example: temporarily disabled but kept for later
+  - name: experimental
+    urls:
+      - https://example.com/experimental.csv
+    enabled: false

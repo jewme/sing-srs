@@ -1,0 +1,96 @@
+sources:
+  - name: Proxy
+    urls:
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/proxy.json
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/gfw.json
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/tiktok.json
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/twitch.json
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/cdn.json
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/apple-proxy.json
+
+  - name: Emby
+    urls:
+      - https://raw.githubusercontent.com/jewme/sing-srs/refs/heads/main/custom-rules/emby.json
+
+  - name: Crypto
+    urls:
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/crypto.json
+      - https://raw.githubusercontent.com/lurixo/sing-box-rules/refs/heads/dev/geosite/geosite-cryptocurrency.json
+
+  - name: ChinaDOMN
+    urls:
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/cn.json
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/apple-cn.json
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/microsoft-cn.json
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/iplocation-direct.json
+
+  - name: ChinaCIDR
+    urls:
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/cncidr.json
+
+  - name: Pirated
+    urls:
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/dmca.json
+
+  - name: Netflix
+    urls:
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/netflix.json
+
+  - name: Google
+    urls:
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/google.json
+
+  - name: YouTube
+    urls:
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/youtube.json
+
+  - name: Stream
+    urls:
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/abema.json
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/disney.json
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/apple-tv.json
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/bahamut.json
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/dazn.json
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/dmm.json
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/hbo.json
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/hulu.json
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/mytvsuper.json
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/niconico.json
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/primevideo.json
+
+  - name: BiliBili
+    urls:
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/bilibili.json
+
+  - name: Apple
+    urls:
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/apple.json
+
+  - name: Ads
+    urls:
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/adrules.json
+
+  - name: Social
+    urls:
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/socialmedia.json
+
+  - name: GenAI
+    urls:
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/ai.json
+
+  - name: OneDrive
+    urls:
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/onedrive.json
+
+  - name: Game
+    urls:
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/games.json
+
+  - name: Location
+    urls:
+      - https://raw.githubusercontent.com/QuixoticHeart/rule-set/refs/heads/ruleset/singbox/version3/iplocation-proxy.json
+
+  - name: Filter
+    urls:
+      - https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt
+    format: adguard
