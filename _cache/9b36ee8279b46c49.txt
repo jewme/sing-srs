@@ -106,6 +106,7 @@
         "arma3.com",
         "armaplatform.com",
         "artstation.com",
+        "artstationmedia.com",
         "artstorm.com",
         "asobostudio.com",
         "avatargarenanow-a.akamaihd.net",
