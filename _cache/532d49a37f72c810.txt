@@ -21344,6 +21344,7 @@
         "qtrac.eu",
         "qtweeter.com",
         "quad9.net",
+        "quakemachinex.com",
         "qualcomm-email.com",
         "qualcomm-inc.com",
         "qualcomm.co.id",
